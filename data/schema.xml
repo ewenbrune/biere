@@ -1,0 +1,50 @@
+
+<root>
+<!-- START mod0 -->    
+    <modele name="mod0">
+
+        <liste_formulations dimension="1">
+
+            <formulation name="form0">
+                <in_obli_calc>
+                   gd0
+                   gd1
+                </in_obli_calc>
+                <in_opti_calc>
+                </in_opti_calc>                
+                <inout_calc>
+                </inout_calc>
+                <out_calc>
+                   out0
+                </out_calc>
+                
+            </formulation>
+
+        </liste_formulations>
+    </modele>
+<!-- END mod0 -->  
+
+<!-- START mod1 -->
+    <modele name="mod1">
+
+        <liste_formulations dimension="1">
+            <formulation name="form1">
+                <in_obli_calc>
+                   gd2
+                   gd3
+                </in_obli_calc>
+                <in_opti_calc>
+                </in_opti_calc>                
+                <inout_calc>
+                </inout_calc>
+                <out_calc>
+                   out1
+                </out_calc>
+
+            </formulation>
+
+        </liste_formulations>
+    </modele>
+<!-- END mod1-->
+
+</root>
