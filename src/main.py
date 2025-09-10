@@ -54,6 +54,7 @@ for root, dirs, files in os.walk(directory):
             print(test_representation)
 pass
 
+# TODO: parse the csv column selector in the schema
 # TODO: adpat format to match with the "arcane" database schema
 # TODO: flatten json
 # TODO: send to neo4j
