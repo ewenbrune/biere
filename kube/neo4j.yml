@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: neo4j-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: neo4j-plugins-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bdd
+  labels:
+    app: bdd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bdd
+  template:
+    metadata:
+      labels:
+        app: bdd
+    spec:
+      volumes:
+        - name: neo4j-data
+          persistentVolumeClaim:
+            claimName: neo4j-data-pvc
+        - name: neo4j-plugins
+          persistentVolumeClaim:
+            claimName: neo4j-plugins-pvc
+      containers:
+        - name: neo4j
+          image: neo4j:5.26
+          ports:
+            - containerPort: 7474
+            - containerPort: 7687
+          env:
+            - name: NEO4J_apoc_export_file_enabled
+              value: "true"
+            - name: NEO4J_apoc_import_file_enabled
+              value: "true"
+            - name: NEO4J_apoc_import_file_use__neo4j__config
+              value: "true"
+            - name: NEO4J_PLUGINS
+              value: '["apoc","apoc-extended"]'
+            - name: NEO4J_server_config_strict__validation_enabled
+              value: "false"
+            - name: NEO4J_AUTH
+              value: "neo4j/password"
+          volumeMounts:
+            - name: neo4j-data
+              mountPath: /data
+            - name: neo4j-plugins
+              mountPath: /plugins
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bdd
+  labels:
+    app: bdd
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 7474
+      targetPort: 7474
+      nodePort: 30074
+    - name: bolt
+      port: 7687
+      targetPort: 7687
+      nodePort: 30687
+  selector:
+    app: bdd
