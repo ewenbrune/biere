@@ -44,9 +44,8 @@ def apply_config(test_case_config, test_representation):
 
 for root, dirs, files in os.walk(directory):
     for file in files:
-        test_representation = test_case_representation(os.path.join(root, file))
-
         if file.endswith(".txt"):
+            test_representation = test_case_representation(os.path.join(root, file))
             test_case_modele, test_case_config = extract_test_config(file)
 
             select_modele(schema, test_representation, test_case_modele)
